@@ -1,0 +1,9 @@
+*.sif
+*.tgz
+*.out
+*.log
+*.old*
+*.simg
+*.img
+*.gz
+/src
