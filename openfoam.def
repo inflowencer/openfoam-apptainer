@@ -17,7 +17,7 @@ From: almalinux:latest
     src/openmpi-4.1.4.tar.gz /usr/lib
     src/pmix-4.2.3.tar.gz /usr/lib
     src/hwloc-2.8.0.tar.gz /usr/lib
-    src/mpitest.c /opt
+    tests/mpitest.c /opt
 
 %post -c /bin/bash
 
