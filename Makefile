@@ -11,7 +11,8 @@ download-source:
 > ./scripts/download-sources.sh
 
 build-container:
-> apptainer build --fakeroot openfoam.sif openfoam.def
+# > apptainer build --fakeroot openfoam.sif openfoam.def
+> apptainer build --fakeroot --sandbox openfoam.simg openfoam.def
 
 build-dev:
 > apptainer build --fakeroot --sandbox openfoam.simg openfoam.def

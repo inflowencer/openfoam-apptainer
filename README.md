@@ -21,7 +21,7 @@ It is recommended to create a directory in your home directory where you store t
 
 ```sh
 mkdir -p ~/containers && cd ~/containers
-apptainer pull library://inflowencer/openfoam:hpc
+apptainer pull library://inflowencer/openfoam/openfoam:2212
 ```
 
 ## Examples

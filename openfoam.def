@@ -2,10 +2,11 @@ Bootstrap: docker
 From: almalinux:latest
 
 %environment
+     # Point to OMPI binaries, libraries, man pages
     export OMPI_DIR=/usr/lib/openmpi-4.1.4
-    export SINGULARITY_OMPI_DIR=$OMPI_DIR
-    export SINGULARITYENV_APPEND_PATH=$OMPI_DIR/bin
-    export SINGULAIRTYENV_APPEND_LD_LIBRARY_PATH=$OMPI_DIR/lib
+    export PATH="$OMPI_DIR/bin:$PATH"
+    export LD_LIBRARY_PATH="$OMPI_DIR/lib:$LD_LIBRARY_PATH"
+    export MANPATH="$OMPI_DIR/share/man:$MANPATH"
     # For OpenFOAM
     export PATH=$OMPI_DIR/bin:$PATH
     export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
@@ -14,22 +15,26 @@ From: almalinux:latest
     src/OpenFOAM-v2212.tgz /usr/lib
     src/ThirdParty-v2212.tgz /usr/lib
     src/openmpi-4.1.4.tar.gz /usr/lib
+    # src/pmix-4.2.3.tar.gz /usr/lib
 
 %post -c /bin/bash
-    # Update & upgrade
+
+    # -------- Update & upgrade --------
     dnf check-update
     dnf update
     dnf makecache --refresh
-    # Prerequisites
-    # dnf groupinstall "Development Tools" -y
+
+    # -------- Prerequisites --------
     dnf install gcc g++ gfortran make cmake boost-devel fftw flex bison zlib-devel ncurses-devel wget tar gzip \
-      zlib boost-thread boost-system libXt-devel libXt perl python -y
-    
-    # OpenMPI-4.1.4
+      zlib boost-thread boost-system libXt-devel libXt perl python openssh-server libevent -y
+
+    # -------- Install libraries --------
     cd /usr/lib
+
+    # -------- OpenMPI --------
     tar -xf openmpi-4.1.4.tar.gz
     cd openmpi-4.1.4
-    ./configure --prefix=$(pwd) CC=/usr/bin/gcc CXX=/usr/bin/g++ FC=/usr/bin/gfortran
+    ./configure --prefix=$(pwd) --with-CC=/usr/bin/gcc CXX=/usr/bin/g++ FC=/usr/bin/gfortran  --with-slurm --with-pmi=/usr/include/slurm/ --with-pmi-libdir=/usr/lib/x86_64-linux-gnu/
     make -j
     make install
 
