@@ -1,3 +1,4 @@
+# -------- Files to ignore --------
 *.sif
 *.tgz
 *.out
@@ -7,4 +8,7 @@
 *.img
 *.gz
 /src
-/tests
+/**/*dev*
+/**/*scratch*
+
+# -------- Files to keep --------
